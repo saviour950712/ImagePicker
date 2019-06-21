@@ -52,6 +52,12 @@ public class ImagePicker extends CordovaPlugin {
             int desiredHeight = 0;
             int quality = 100;
             int outputType = 0;
+            String cancelText = "";
+            String okText = "";
+            String overTextTitle = "";
+            String overTextDetail1 = "";
+            String overTextDetail2 = "";
+            String processingText = "";
             if (params.has("maximumImagesCount")) {
                 max = params.getInt("maximumImagesCount");
             }
@@ -67,12 +73,36 @@ public class ImagePicker extends CordovaPlugin {
             if (params.has("outputType")) {
                 outputType = params.getInt("outputType");
             }
-
+            if (params.has("cancelText")) {
+                cancelText = params.getString("cancelText");
+            }
+            if (params.has("okText")) {
+                okText = params.getString("okText");
+            }
+            if (params.has("overTextTitle")) {
+                overTextTitle = params.getString("overTextTitle");
+            }
+            if (params.has("overTextDetail1")) {
+                overTextDetail1 = params.getString("overTextDetail1");
+            }
+            if (params.has("overTextDetail2")) {
+                overTextDetail2 = params.getString("overTextDetail2");
+            }
+            if (params.has("processingText")) {
+                processingText = params.getString("processingText");
+            }
+            
             imagePickerIntent.putExtra("MAX_IMAGES", max);
             imagePickerIntent.putExtra("WIDTH", desiredWidth);
             imagePickerIntent.putExtra("HEIGHT", desiredHeight);
             imagePickerIntent.putExtra("QUALITY", quality);
             imagePickerIntent.putExtra("OUTPUT_TYPE", outputType);
+            imagePickerIntent.putExtra("CANCEL_TEXT", cancelText);
+            imagePickerIntent.putExtra("OK_TEXT", okText);
+            imagePickerIntent.putExtra("OVER_TEXT_TITLE", overTextTitle);
+            imagePickerIntent.putExtra("OVER_TEXT_DETAIL1", overTextDetail1);
+            imagePickerIntent.putExtra("OVER_TEXT_DETAIL2", overTextDetail2);
+            imagePickerIntent.putExtra("PROCESSING_TEXT", processingText);
 
             // some day, when everybody uses a cordova version supporting 'hasPermission', enable this:
             /*

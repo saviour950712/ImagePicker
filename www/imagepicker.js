@@ -5,7 +5,7 @@
  * Developed by Wymsee for Sync OnSet
  */
 
-var ImagePicker = function() {
+var ImagePicker = function () {
 
 };
 
@@ -14,22 +14,22 @@ ImagePicker.prototype.OutputType = {
 	BASE64_STRING: 1
 };
 
-ImagePicker.prototype.validateOutputType = function(options){
+ImagePicker.prototype.validateOutputType = function (options) {
 	var outputType = options.outputType;
-	if(outputType){
-		if(outputType !== this.OutputType.FILE_URI && outputType !== this.OutputType.BASE64_STRING){
+	if (outputType) {
+		if (outputType !== this.OutputType.FILE_URI && outputType !== this.OutputType.BASE64_STRING) {
 			console.log('Invalid output type option entered. Defaulting to FILE_URI. Please use window.imagePicker.OutputType.FILE_URI or window.imagePicker.OutputType.BASE64_STRING');
 			options.outputType = this.OutputType.FILE_URI;
 		}
 	}
 };
 
-ImagePicker.prototype.hasReadPermission = function(callback) {
-  return cordova.exec(callback, null, "ImagePicker", "hasReadPermission", []);
+ImagePicker.prototype.hasReadPermission = function (callback) {
+	return cordova.exec(callback, null, "ImagePicker", "hasReadPermission", []);
 };
 
-ImagePicker.prototype.requestReadPermission = function(callback, failureCallback) {
-  return cordova.exec(callback, failureCallback, "ImagePicker", "requestReadPermission", []);
+ImagePicker.prototype.requestReadPermission = function (callback, failureCallback) {
+	return cordova.exec(callback, failureCallback, "ImagePicker", "requestReadPermission", []);
 };
 
 /*
@@ -46,7 +46,7 @@ ImagePicker.prototype.requestReadPermission = function(callback, failureCallback
 *       .outputType - type of output returned. defaults to file URIs.
 *					  Please see ImagePicker.OutputType for available values.
 */
-ImagePicker.prototype.getPictures = function(success, fail, options) {
+ImagePicker.prototype.getPictures = function (success, fail, options) {
 	if (!options) {
 		options = {};
 	}
@@ -62,7 +62,13 @@ ImagePicker.prototype.getPictures = function(success, fail, options) {
 		title: options.title ? options.title : 'Select an Album', // the default is the message of the old plugin impl
 		message: options.message ? options.message : null, // the old plugin impl didn't have it, so passing null by default
 		outputType: options.outputType ? options.outputType : this.OutputType.FILE_URI,
-		disable_popover: options.disable_popover ? options.disable_popover : false // Disable the iOS popover as seen on iPad
+		disable_popover: options.disable_popover ? options.disable_popover : false, // Disable the iOS popover as seen on iPad,
+		cancelText: options.cancelText,
+		okText: options.okText,
+		overTextTitle: options.overTextTitle,
+		overTextDetail1: options.overTextDetail1,
+		overTextDetail2: options.overTextDetail2,
+		processingText: options.processingText,
 	};
 
 	return cordova.exec(success, fail, "ImagePicker", "getPictures", [params]);

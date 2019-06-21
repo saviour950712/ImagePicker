@@ -77,6 +77,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MultiImageChooserActivity extends AppCompatActivity implements
         OnItemClickListener,
@@ -90,6 +91,12 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
     public static final String HEIGHT_KEY = "HEIGHT";
     public static final String QUALITY_KEY = "QUALITY";
     public static final String OUTPUT_TYPE_KEY = "OUTPUT_TYPE";
+    public static final String CANCEL_TEXT_KEY = "CANCEL_TEXT";
+    public static final String OK_TEXT_KEY = "OK_TEXT";
+    public static final String OVER_TEXT_TITLE_KEY = "OVER_TEXT_TITLE";
+    public static final String OVER_TEXT_DETAIL1_KEY = "OVER_TEXT_DETAIL1";
+    public static final String OVER_TEXT_DETAIL2_KEY = "OVER_TEXT_DETAIL2";
+    public static final String PROCESSING_TEXT_KEY = "PROCESSING_TEXT";
 
     private ImageAdapter ia;
 
@@ -111,6 +118,14 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
     private int desiredHeight;
     private int quality;
     private OutputType outputType;
+
+
+    private String cancelText;
+    private String okText;
+    private String overTextTitle;
+    private String overTextDetail1;
+    private String overTextDetail2;    
+    private String processingText;    
 
     private final ImageFetcher fetcher = new ImageFetcher();
 
@@ -134,6 +149,15 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
         desiredWidth = getIntent().getIntExtra(WIDTH_KEY, 0);
         desiredHeight = getIntent().getIntExtra(HEIGHT_KEY, 0);
         quality = getIntent().getIntExtra(QUALITY_KEY, 0);
+
+
+        cancelText = getIntent().getStringExtra(CANCEL_TEXT_KEY);
+        okText = getIntent().getStringExtra(OK_TEXT_KEY);
+        overTextTitle = getIntent().getStringExtra(OVER_TEXT_TITLE_KEY);
+        overTextDetail1 = getIntent().getStringExtra(OVER_TEXT_DETAIL1_KEY);
+        overTextDetail2 = getIntent().getStringExtra(OVER_TEXT_DETAIL2_KEY);        
+        processingText = getIntent().getStringExtra(PROCESSING_TEXT_KEY);
+        
         maxImageCount = maxImages;
         outputType = OutputType.fromValue(getIntent().getIntExtra(OUTPUT_TYPE_KEY, 0));
 
@@ -179,8 +203,10 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
         setupHeader();
         updateAcceptButton();
         progress = new ProgressDialog(this);
-        progress.setTitle(getString(fakeR.getId("string", "multi_image_picker_processing_images_title")));
-        progress.setMessage(getString(fakeR.getId("string", "multi_image_picker_processing_images_message")));
+        // progress.setTitle(getString(fakeR.getId("string", "multi_image_picker_processing_images_title")));
+
+        //设置processing文本
+        progress.setMessage(processingText);
     }
 
     @Override
@@ -197,8 +223,8 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
         if (maxImages == 0 && isChecked) {
             isChecked = false;
             new AlertDialog.Builder(this)
-                    .setTitle("Maximum " + maxImageCount + " Photos")
-                    .setMessage("You can only select " + maxImageCount + " photos at a time.")
+                    .setTitle(overTextTitle)
+                    .setMessage(overTextDetail1 + maxImageCount + overTextDetail2)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
@@ -360,6 +386,11 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
         );
 
         abDoneView = customActionBarView.findViewById(fakeR.getId("id", "actionbar_done"));
+
+        // 设置OK文本
+        TextView abDoneTextView = (TextView)customActionBarView.findViewById(fakeR.getId("id", "actionbar_done_textview"));
+        abDoneTextView.setText(okText);
+
         abDoneView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -369,6 +400,11 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
         });
 
         abDiscardView = customActionBarView.findViewById(fakeR.getId("id", "actionbar_discard"));
+
+        // 设置取消文本
+        TextView abDiscardTextView = (TextView)customActionBarView.findViewById(fakeR.getId("id", "actionbar_discard_textview"));
+        abDiscardTextView.setText(cancelText);
+        
         abDiscardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
