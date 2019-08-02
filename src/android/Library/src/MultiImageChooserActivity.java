@@ -203,6 +203,9 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
         setupHeader();
         updateAcceptButton();
         progress = new ProgressDialog(this);
+        progress.setCancelable(false);
+        progress.setCanceledOnTouchOutside(false);
+
         // progress.setTitle(getString(fakeR.getId("string", "multi_image_picker_processing_images_title")));
 
         //设置processing文本
